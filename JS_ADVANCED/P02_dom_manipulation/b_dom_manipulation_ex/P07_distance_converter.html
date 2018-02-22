@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Distance Converter</title>
+    <style>
+        label, input {
+            display: inline-block;
+            width: 5em;
+        }
+
+        label {
+            text-align: right;
+        }
+    </style>
+</head>
+<body onload="attachEventsListeners()">
+<h1>Distance Converter</h1>
+<div>
+    <label for="inputDistance">From:</label>
+    <input type="text" id="inputDistance">
+    <select id="inputUnits">
+        <option value="km">Kilometers</option>
+        <option value="m">Meters</option>
+        <option value="cm">Centimeters</option>
+        <option value="mm">Millimeters</option>
+        <option value="mi">Miles</option>
+        <option value="yrd">Yards</option>
+        <option value="ft">Feet</option>
+        <option value="in">Inches</option>
+    </select>
+    <input type="button" id="convert" value="Convert">
+</div>
+<div>
+    <label for="outputDistance">To:</label>
+    <input type="text" id="outputDistance" disabled="disabled">
+    <select id="outputUnits">
+        <option value="km">Kilometers</option>
+        <option value="m">Meters</option>
+        <option value="cm">Centimeters</option>
+        <option value="mm">Millimeters</option>
+        <option value="mi">Miles</option>
+        <option value="yrd">Yards</option>
+        <option value="ft">Feet</option>
+        <option value="in">Inches</option>
+    </select>
+</div>
+
+<script>
+
+    window.onload = convertDistance();
+
+    function convertDistance(){
+        let button = document.getElementById("convert");
+        let inputUnits = document.getElementById("inputUnits");
+        let outputUnits = document.getElementById("outputUnits");
+
+        let resultField = document.getElementById("outputDistance");
+
+        button.addEventListener('click', function(){
+            let inputNumber = Number(document.getElementById("inputDistance").value);
+            let indexStartUnit = inputUnits.selectedIndex;
+            let indexOutputUnit = outputUnits.selectedIndex;
+
+            resultField.value = (inputNumber * arrMeasures[indexStartUnit]) / arrMeasures[indexOutputUnit];
+        });
+
+        let meter_km = 1000;
+        let meter_m = 1;
+        let meter_cm = 0.01;
+        let meter_mm = 0.001;
+        let meter_mi = 1609.34;
+        let meter_yrd = 0.9144;
+        let meter_ft = 0.3048;
+        let meter_in = 0.0254;
+
+        let arrMeasures = [meter_km, meter_m, meter_cm, meter_mm, meter_mi, meter_yrd, meter_ft, meter_in];
+
+    }
+</script>
+</body>
+</html>
