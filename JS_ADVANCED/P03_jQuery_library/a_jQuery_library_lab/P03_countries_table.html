@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Countries Table</title>
+    <style>
+        td, th { background: #DDD; padding: 5px 10px }
+        input[type='text'] { width: 60px }
+    </style>
+    <script src="https://code.jquery.com/jquery-3.1.1.min.js" integrity="sha256-hVVnYaiADRTO2PzUGmuLJr8BLUSjGIZsDYGmIJLv2b8="   crossorigin="anonymous"></script>
+</head>
+<body>
+<table id="countriesTable">
+    <tr>
+        <th>Country</th>
+        <th>Capital</th>
+        <th>Action</th>
+    </tr>
+    <tr>
+        <td><input type="text" id="newCountryText" /></td>
+        <td><input type="text" id="newCapitalText" /></td>
+        <td><a href="#" id="createLink">[Create]</a></td>
+    </tr>
+</table>
+<script>
+    $(() => initializeTable());
+
+    function initializeTable(){
+
+        addRow('Bulgaria', 'Sofia');
+        addRow('Germany', 'Berlin');
+        addRow('Russia', 'Moscow');
+
+        fixRowLinks();
+
+        $('#createLink').on('click', addNewElement);
+
+        function addNewElement(){
+            let country = $('#newCountryText');
+            let capital = $('#newCapitalText');
+
+            addRow(country.val(), capital.val());
+
+            country.val('');
+            capital.val('');
+            fixRowLinks();
+
+        }
+
+        function addRow(country, town){
+            let row = $('<tr>')
+                .append($("<td>").text(country))
+                .append($("<td>").text(town))
+                .append($("<td>")
+                    .append($("<a href='#'>[Up] </a>").on('click', moveRowUp))
+                    .append($("<a href='#'>[Down] </a>").on('click', moveRowDown))
+                    .append($("<a href='#'>[Delete] </a>").on('click', deleteRow)));
+            $('#countriesTable').append(row);
+        }
+
+        function moveRowUp(){
+            let row = $(this).parent().parent();
+
+            row.fadeOut(function () {
+                row.insertBefore(row.prev());
+                row.fadeIn();
+                fixRowLinks();
+            })
+
+        }
+
+        function moveRowDown(){
+            let row = $(this).parent().parent();
+
+            row.fadeOut(function () {
+                row.insertAfter(row.next());
+                row.fadeIn();
+                fixRowLinks();
+            })
+
+        }
+        function deleteRow() {
+
+            let row = $(this).parent().parent();
+
+            row.fadeOut(function(){
+                row.remove();
+                fixRowLinks();
+            })
+        }
+
+        function fixRowLinks(){
+
+            let table = $('#countriesTable');
+            table.find('tr td a').css('display', 'inline');
+            table.find("tr:eq(2) td a:contains('Up')").css('display', 'none');
+            table.find("tr:last-child td a:contains('Down')").css('display', 'none');
+        }
+    }
+
+</script>
+</body>
+</html>
