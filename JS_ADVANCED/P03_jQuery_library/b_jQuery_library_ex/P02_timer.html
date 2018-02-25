@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Timer</title>
+    <script src="./jquery-3.3.1.min.js"></script>
+    <style>
+        #timer {
+            font-size: 5em;
+        }
+    </style>
+</head>
+<body>
+<div id="timer">
+    <span id="hours" class="timer">00</span>:
+    <span id="minutes" class="timer">00</span>:
+    <span id="seconds" class="timer">00</span>
+    <button id="start-timer">Start</button>
+    <button id="stop-timer">Stop</button>
+</div>
+<script>
+    window.onload=function(){
+        timer();
+    };
+
+    function timer(){
+
+        $('#start-timer').on('click', startTimer);
+
+
+        let startSeconds = 1;
+        let timerInterval;
+
+        function startTimer(){
+            let hours = $('#hours');
+            let minutes = $('#minutes');
+            let seconds = $('#seconds');
+
+            if(!timerInterval){
+                timerInterval = setInterval(incrementSeconds, 1000);
+            } else{
+                clearInterval(timerInterval);
+                timerInterval = setInterval(incrementSeconds, 1000);
+            }
+
+            function incrementSeconds(){
+
+                let current_hours = Math.trunc(startSeconds / 3600);
+                let current_minutes = Math.trunc((startSeconds % 3600) / 60);
+                let current_seconds = startSeconds % 60;
+
+                seconds.text(('0' + current_seconds).slice(-2));
+                minutes.text(('0' + current_minutes).slice(-2));
+                hours.text(('0' + current_hours).slice(-2));
+
+                startSeconds++;
+            }
+
+            $('#stop-timer').on('click', pauseTimer);
+
+            function pauseTimer(){
+                clearInterval(timerInterval);
+            }
+        }
+    }
+
+
+</script>
+</body>
+</html>

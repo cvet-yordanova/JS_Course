@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Increment Counter</title>
+    <script src="./jquery-3.3.1.min.js"></script>
+</head>
+<body>
+<div id="wrapper">
+</div>
+<script>
+    window.onload = function(){
+        increment("#wrapper");
+    };
+
+    function increment(selector){
+        let elementToAppend = $(selector);
+
+        let textArea = $('<textarea>')
+            .addClass('counter')
+            .val(0)
+            .attr('disabled', 'true');
+
+        let incrementButton = $('<button>')
+            .addClass('btn')
+            .attr('id', 'incrementBtn')
+            .text('Increment')
+            .on('click', incrementTextAreaValue);
+
+        let addButton = $('<button>')
+            .addClass('btn')
+            .attr('id', 'addBtn')
+            .text('Add')
+            .on('click', addListItem);
+
+        let ul = $('<ul>')
+            .addClass('results');
+
+        elementToAppend
+            .append(textArea)
+            .append(incrementButton)
+            .append(addButton)
+            .append(ul);
+
+        function incrementTextAreaValue(){
+            let counterTextArea = $('.counter');
+            let currentValue = Number(counterTextArea.val());
+            currentValue++;
+            counterTextArea.val(currentValue++);
+        }
+
+        function addListItem(){
+            let resultList = $('.results');
+            resultList.append($('<li>').text($('.counter').val()));
+        }
+    }
+</script>
+</body>
+</html>
