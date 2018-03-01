@@ -1,66 +1,65 @@
-function makeRecipe() {
+let solve = function () {
+    let products = {protein: 0, carbohydrate: 0, fat: 0, flavour: 0};
 
-    let result;
+    let recipes = {
+        apple: {carbohydrate: 1, flavour: 2},
+        coke: {carbohydrate: 10, flavour: 20},
+        burger: {carbohydrate: 5, fat: 7, flavour: 3},
+        omelet: {protein: 5, fat: 1, flavour: 1},
+        cheverme: {protein: 10, carbohydrate: 10, fat: 10, flavour: 10}
+    };
 
-    let closure = (function (command) {
+    return function (input) {
 
-        if(command === 'prepare') {
+        let command = input.split(" ");
+        let result = "";
 
+        if (command[0] === 'report') {
+            result = `protein=${products['protein']} carbohydrate=${products['carbohydrate']} fat=${products['fat']} flavour=${products['flavour']}`;
+        } else if (command[0] === 'prepare') {
+            if (checkAllIngredientsAvailable(command[1], Number(command[2]))) {
+                prepareFood(command[1], Number(command[2]));
+            }
+        } else if (command[0] === 'restock') {
+            products[command[1]] += Number(command[2]);
+            result = "Success"
         }
 
-        let products = {
-            protein: 0,
-            carbohydrates: 0,
-            fat: 0,
-            flavours: 0
-        };
-
-        let recipes = {
-            Apple: {
-                protein: 0,
-                carbohydrates: 1,
-                fat: 0,
-                flavours: 2
-            },
-            Coke: {
-                protein: 0,
-                carbohydrates: 10,
-                fat: 0,
-                flavours: 20
-            },
-            Burger: {
-                protein: 0,
-                carbohydrates: 5,
-                fat: 7,
-                flavours: 3
-            },
-            Omelet: {
-                protein: 5,
-                carbohydrates: 0,
-                fat: 1,
-                flavours: 1
-            },
-            Cheverme: {
-                protein: 10,
-                carbohydrates: 10,
-                fat: 10,
-                flavours: 10
-            }
-        };
-
-        function checkAllIngredientsAvailable(recipeName){
-            let available = false;
-
-            for (let ing in products) {
-                 if(products[ing] < recipes[recipeName][ing]){
-                     available = false;
-                 }
+        function checkAllIngredientsAvailable(recipeName, quantity) {
+            let available = true;
+            for (let ing in recipes[recipeName.toLowerCase()]) {
+                if (products[ing] * quantity < recipes[recipeName.toLowerCase()][ing]) {
+                    available = false;
+                    result = `Error: not enough ${ing} in stock`;
+                    break;
+                }
             }
 
-            return false;
-
+            return available;
         }
 
+        function prepareFood(recipeName, quantity) {
+            result = "Success";
 
-    })();
-}
+            for (let ing in recipes[recipeName]) {
+                products[ing] -= recipes[recipeName.toLowerCase()][ing] * quantity;
+            }
+        }
+
+        return result;
+    };
+};
+
+let r = solve();
+r('prepare cheverme 1');
+r('restock protein 10');
+r('prepare cheverme 1');
+r('restock carbohydrate 10');
+r('prepare cheverme 1');
+r('restock fat 10');
+r('prepare cheverme 1');
+r('restock flavour 10');
+r('prepare cheverme 1');
+r('report');
+
+
