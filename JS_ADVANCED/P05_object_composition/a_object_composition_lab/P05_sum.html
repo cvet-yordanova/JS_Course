@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Sum</title>
+    <script src="https://code.jquery.com/jquery-3.1.1.min.js"></script>
+</head>
+<body>
+<input type="text" id="num1"/>
+<input type="text" id="num2"/>
+<input type="text" id="result" readonly/>
+<br>
+<button id="sumButton">
+    Sum
+</button>
+<button id="subtractButton">
+    Subtract
+</button>
+
+<script>
+
+    let func = (function () {
+        let firstNum, secondNum, result;
+
+        function init(selector1, selector2, resultSelector) {
+            firstNum = $(selector1);
+            secondNum = $(selector2);
+            result = $(resultSelector);
+        }
+
+        function add() {
+            result.val(Number(firstNum.val()) + Number(secondNum.val()));
+            console.log(Number(firstNum.val()) + Number(secondNum.val()))
+        }
+
+        function subtract() {
+            result.val(Number(firstNum.val()) - Number(secondNum.val()));
+        }
+
+        return {
+            init,
+            add,
+            subtract
+        }
+    })();
+
+    $(document).on('ready', func.init('#num1', '#num2', '#result'));
+    $('#sumButton').on('click', func.add);
+    $('#subtractButton').on('click', func.subtract);
+
+
+</script>
+</body>
+</html>
