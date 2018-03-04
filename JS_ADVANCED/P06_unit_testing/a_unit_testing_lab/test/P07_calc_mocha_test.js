@@ -57,12 +57,12 @@ describe("calculator maker", function () {
         expect(calc.get()).to.be.NaN;
     });
 
-    it("should not work with string numbers", function () {
+    it("should work with string numbers", function () {
         calc.subtract("3");
         expect(calc.get()).to.equal(-3);
     });
 
-    it("should not work with string numbers", function () {
+    it("should work with string numbers", function () {
         calc.add("3");
         expect(calc.get()).to.equal(3);
     })
